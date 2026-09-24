@@ -26,3 +26,9 @@ mirrors `~/.config/`, and it only contains files I actually changed. Omarchy's o
 
 Omarchy went onto a fresh Arch base: btrfs, the Limine bootloader and Snapper snapshots, all set up
 by the installer. I kept the default Tokyo Night theme.
+
+**Display scale.** The first thing I fought with was scaling. Omarchy picks a scale for you, and I
+went through 2, 1 and 1.25 before settling on **1.6**. At 1.6 a 1080p screen works out to 1200×675
+logical pixels. It applies to every monitor, so the HP monitor
+gets the same scale. `GDK_SCALE` stays at Omarchy's 2 for GTK apps.
+([`config/hypr/monitors.lua`](config/hypr/monitors.lua))
