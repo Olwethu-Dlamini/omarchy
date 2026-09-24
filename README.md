@@ -103,3 +103,15 @@ opens btop, so both are one chord apart.
 ### 15 September
 
 **FileZilla** for moving files to and from servers over SFTP.
+
+### Mid-September: the bar
+
+Omarchy 4's bar and idle settings live in `~/.config/omarchy/shell.json`. I changed three things:
+
+- **Transparent bar**, so the wallpaper shows through behind it.
+- **Workspaces first**, before the Omarchy menu button, on the left side. My eyes go to the top-left
+  corner to see where I am.
+- **Lock after 30 minutes instead of 5.** The screensaver still starts after 150 seconds, but I'm
+  not typing my password every time I look away to read something.
+
+([`config/omarchy/shell.json`](config/omarchy/shell.json))
