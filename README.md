@@ -69,3 +69,6 @@ opens the current folder in my terminal, not only in GNOME Terminal.
 **VPN and Kubernetes.** I added Tailscale, WireGuard and kubectl. `systemd-resolvconf` is there
 because `wg-quick` needs a `resolvconf` binary to apply a tunnel's DNS settings, and Arch doesn't
 ship one by default.
+
+**Thunderbird and Firefox.** Thunderbird for mail, and plain Firefox next to Zen for sites that
+misbehave in Zen.
