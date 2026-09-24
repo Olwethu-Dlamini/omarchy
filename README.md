@@ -32,3 +32,9 @@ went through 2, 1 and 1.25 before settling on **1.6**. At 1.6 a 1080p screen wor
 logical pixels. It applies to every monitor, so the HP monitor
 gets the same scale. `GDK_SCALE` stays at Omarchy's 2 for GTK apps.
 ([`config/hypr/monitors.lua`](config/hypr/monitors.lua))
+
+**Terminal font size.** At 1.6 scale the default 9pt terminal font was too big. I dropped it to
+**7pt** in all four terminals Omarchy ships configs for (Alacritty, foot, Ghostty and Kitty), so
+it's the same whichever one opens. 7pt at 1.6 scale looks about like 11pt at 1×.
+([`config/alacritty/`](config/alacritty/alacritty.toml), [`config/foot/`](config/foot/foot.ini),
+[`config/ghostty/`](config/ghostty/config), [`config/kitty/`](config/kitty/kitty.conf))
