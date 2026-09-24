@@ -146,3 +146,42 @@ with cache. The bar runs it every 3 seconds.
 | [`config/git/config`](config/git/config) | `~/.config/git/config` | my name, NTFS-friendly `core` settings |
 | [`config/mise/config.toml`](config/mise/config.toml) | `~/.config/mise/config.toml` | Node, gh and Codex |
 | [`packages.txt`](packages.txt) | — | everything I installed on top of Omarchy |
+
+## Using these files
+
+Copy a file into place, then reload whatever reads it:
+
+```bash
+cp config/omarchy/shell.json ~/.config/omarchy/shell.json
+omarchy-restart-shell        # the bar picks up shell.json and bar scripts
+```
+
+`hyprctl reload` reloads Hyprland after a change under `~/.config/hypr/`. Terminals read their
+config when they start. `config/environment.d/` only applies after logging out and back in.
+
+To see what I changed compared with Omarchy's version of a file:
+
+```bash
+diff /usr/share/omarchy/config/foot/foot.ini config/foot/foot.ini
+```
+
+To go back to Omarchy's default for a file, run `omarchy-refresh-config <path under ~/.config>`,
+for example `omarchy-refresh-config foot/foot.ini`. It saves your version as `.bak.<timestamp>`
+before replacing it.
+
+To install the packages:
+
+```bash
+yay -S --needed $(grep -v '^#' packages.txt | awk NF)
+```
+
+## Lessons so far
+
+- **Change your own file, not Omarchy's.** Everything under `/usr/share/omarchy` belongs to the
+  package and gets replaced on update. The files in `~/.config` load after the defaults, so
+  anything I set there wins.
+- **Pick the display scale first.** Other settings follow from it. Once I settled on 1.6, the
+  terminal fonts had to shrink to match.
+- **Omarchy already ships most of what I need.** mise, btop, the bar, the screensaver and the
+  keybinding helper (`o.bind`) were all there, and its browser installer set up Zen's Wayland
+  variable for me. Most of my changes are a line or two in the right file.
