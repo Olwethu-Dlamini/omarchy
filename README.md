@@ -126,3 +126,23 @@ The script reads `/proc/meminfo` and counts "used" as `MemTotal - MemAvailable`,
 `free` and btop show. Counting `MemFree` instead would look scary, because Linux fills spare RAM
 with cache. The bar runs it every 3 seconds.
 ([`config/omarchy/bar/scripts/ram-usage`](config/omarchy/bar/scripts/ram-usage))
+
+## What's in this repo
+
+| File | Goes to | What I changed |
+|---|---|---|
+| [`config/hypr/monitors.lua`](config/hypr/monitors.lua) | `~/.config/hypr/monitors.lua` | scale 1.6 on every display |
+| [`config/hypr/bindings.lua`](config/hypr/bindings.lua) | `~/.config/hypr/bindings.lua` | Super+Shift+Ctrl+T opens Mission Center |
+| [`config/omarchy/shell.json`](config/omarchy/shell.json) | `~/.config/omarchy/shell.json` | transparent bar, workspaces first, RAM module, lock after 30 min |
+| [`config/omarchy/bar/scripts/ram-usage`](config/omarchy/bar/scripts/ram-usage) | `~/.config/omarchy/bar/scripts/ram-usage` | the RAM module's script |
+| [`config/omarchy/branding/screensaver.txt`](config/omarchy/branding/screensaver.txt) | `~/.config/omarchy/branding/screensaver.txt` | my name on the screensaver |
+| [`config/alacritty/alacritty.toml`](config/alacritty/alacritty.toml) | `~/.config/alacritty/alacritty.toml` | 7pt font |
+| [`config/foot/foot.ini`](config/foot/foot.ini) | `~/.config/foot/foot.ini` | 7pt font, keyboard URL hints |
+| [`config/ghostty/config`](config/ghostty/config) | `~/.config/ghostty/config` | 7pt font |
+| [`config/kitty/kitty.conf`](config/kitty/kitty.conf) | `~/.config/kitty/kitty.conf` | 7pt font |
+| [`config/brave-flags.conf`](config/brave-flags.conf) | `~/.config/brave-flags.conf` | Omarchy's Chromium flags, for Brave |
+| [`config/mimeapps.list`](config/mimeapps.list) | `~/.config/mimeapps.list` | Brave as the default browser |
+| [`config/environment.d/omarchy-firefox-wayland.conf`](config/environment.d/omarchy-firefox-wayland.conf) | `~/.config/environment.d/` | Firefox and Zen on native Wayland |
+| [`config/git/config`](config/git/config) | `~/.config/git/config` | my name, NTFS-friendly `core` settings |
+| [`config/mise/config.toml`](config/mise/config.toml) | `~/.config/mise/config.toml` | Node, gh and Codex |
+| [`packages.txt`](packages.txt) | — | everything I installed on top of Omarchy |
