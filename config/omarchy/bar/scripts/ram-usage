@@ -1,0 +1,7 @@
+#!/bin/bash
+# RAM usage for the Omarchy bar. "Used" is MemTotal - MemAvailable, the same figure btop and free report.
+awk '/^MemTotal:/ { total = $2 } /^MemAvailable:/ { avail = $2 }
+END {
+  used = total - avail
+  printf "{\"text\":\"󰍛 %d%%\",\"tooltip\":\"RAM: %.1f of %.1f GiB used\"}\n", used * 100 / total, used / 1048576, total / 1048576
+}' /proc/meminfo

@@ -45,6 +45,14 @@
           "id": "omarchy.agents"
         },
         {
+          "id": "ram",
+          "type": "command",
+          "exec": "~/.config/omarchy/bar/scripts/ram-usage",
+          "interval": 3,
+          "tooltip": "RAM usage",
+          "onClick": "omarchy-launch-or-focus-tui btop"
+        },
+        {
           "id": "omarchy.bluetooth"
         },
         {

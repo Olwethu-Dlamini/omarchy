@@ -115,3 +115,14 @@ Omarchy 4's bar and idle settings live in `~/.config/omarchy/shell.json`. I chan
   not typing my password every time I look away to read something.
 
 ([`config/omarchy/shell.json`](config/omarchy/shell.json))
+
+### 23 September: RAM in the bar
+
+With about 11 GiB of RAM and a couple of browsers open, memory is what runs out first on this
+laptop, so I wanted it visible all the time. I added a custom module to the right side of the bar.
+It shows RAM use as a percentage and the exact GiB in the tooltip, and clicking it opens btop.
+
+The script reads `/proc/meminfo` and counts "used" as `MemTotal - MemAvailable`, the same number
+`free` and btop show. Counting `MemFree` instead would look scary, because Linux fills spare RAM
+with cache. The bar runs it every 3 seconds.
+([`config/omarchy/bar/scripts/ram-usage`](config/omarchy/bar/scripts/ram-usage))
