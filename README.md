@@ -65,3 +65,7 @@ credential-helper lines: `gh auth setup-git` writes those.
 
 **"Open in Terminal" in Nautilus.** `nautilus-open-any-terminal` adds a right-click entry that
 opens the current folder in my terminal, not only in GNOME Terminal.
+
+**VPN and Kubernetes.** I added Tailscale, WireGuard and kubectl. `systemd-resolvconf` is there
+because `wg-quick` needs a `resolvconf` binary to apply a tunnel's DNS settings, and Arch doesn't
+ship one by default.

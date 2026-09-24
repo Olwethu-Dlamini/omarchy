@@ -14,3 +14,9 @@ ntfsprogs
 
 # Files
 nautilus-open-any-terminal
+
+# VPN and clusters
+tailscale
+wireguard-tools
+systemd-resolvconf
+kubectl
