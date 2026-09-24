@@ -4,3 +4,6 @@
 
 # Coding agent
 claude-code
+
+# Browsers
+zen-browser-bin

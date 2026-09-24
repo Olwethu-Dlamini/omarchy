@@ -46,3 +46,12 @@ it's the same whichever one opens. 7pt at 1.6 scale looks about like 11pt at 1×
 **Dev tools.** Omarchy comes with [mise](https://mise.jdx.dev) for language runtimes, so I used it
 for my own tools too: Node 26.8.1, the GitHub CLI and Codex. Claude Code came from pacman.
 ([`config/mise/config.toml`](config/mise/config.toml), [`packages.txt`](packages.txt))
+
+### 12 September: making it mine
+
+**Zen browser.** I installed Zen with Omarchy's own browser installer
+(`omarchy install browser zen`). It pulls Zen from the AUR and writes `MOZ_ENABLE_WAYLAND=1` into
+`~/.config/environment.d/`. Hyprland already sets that variable for apps it launches, and the
+environment.d copy covers anything the systemd user session starts, so Firefox-based browsers
+always run on Wayland.
+([`config/environment.d/`](config/environment.d/omarchy-firefox-wayland.conf))
