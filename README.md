@@ -81,3 +81,12 @@ loads Omarchy's bundled extensions (copy URL, yt-dlp and a slimmer WhatsApp).
 ([`config/brave-flags.conf`](config/brave-flags.conf))
 
 **Telegram.** I installed the native desktop app instead of a web app.
+
+### 14 September: small daily annoyances
+
+**Opening links in foot.** foot never makes URLs clickable with the mouse. Instead it has a hint
+mode: **Ctrl+Shift+O** labels every URL on screen, and typing a label opens that link. I bound
+**Ctrl+Shift+Y** to copy a link instead of opening it. The labels use home-row letters, so I don't
+have to look at the keyboard, and they cover OSC-8 hyperlinks too, not only bare URLs.
+(Ctrl+Shift+U was my first choice, but foot already uses it for Unicode input.)
+([`config/foot/foot.ini`](config/foot/foot.ini))
