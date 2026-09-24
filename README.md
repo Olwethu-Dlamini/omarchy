@@ -42,3 +42,7 @@ it's the same whichever one opens. 7pt at 1.6 scale looks about like 11pt at 1×
 **My name on the screensaver.** Omarchy's screensaver draws ASCII art from
 `~/.config/omarchy/branding/screensaver.txt`. I added my name above the Omarchy logo.
 ([`config/omarchy/branding/screensaver.txt`](config/omarchy/branding/screensaver.txt))
+
+**Dev tools.** Omarchy comes with [mise](https://mise.jdx.dev) for language runtimes, so I used it
+for my own tools too: Node 26.8.1, the GitHub CLI and Codex. Claude Code came from pacman.
+([`config/mise/config.toml`](config/mise/config.toml), [`packages.txt`](packages.txt))

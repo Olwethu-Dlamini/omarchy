@@ -1,0 +1,6 @@
+# Packages I installed on top of Omarchy's defaults, grouped by why.
+# Install them all with:
+#   yay -S --needed $(grep -v '^#' packages.txt | awk NF)
+
+# Coding agent
+claude-code
