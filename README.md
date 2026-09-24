@@ -38,3 +38,7 @@ gets the same scale. `GDK_SCALE` stays at Omarchy's 2 for GTK apps.
 it's the same whichever one opens. 7pt at 1.6 scale looks about like 11pt at 1×.
 ([`config/alacritty/`](config/alacritty/alacritty.toml), [`config/foot/`](config/foot/foot.ini),
 [`config/ghostty/`](config/ghostty/config), [`config/kitty/`](config/kitty/kitty.conf))
+
+**My name on the screensaver.** Omarchy's screensaver draws ASCII art from
+`~/.config/omarchy/branding/screensaver.txt`. I added my name above the Omarchy logo.
+([`config/omarchy/branding/screensaver.txt`](config/omarchy/branding/screensaver.txt))
