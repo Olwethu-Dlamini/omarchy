@@ -16,6 +16,7 @@ ntfsprogs
 
 # Files
 nautilus-open-any-terminal
+filezilla
 
 # System monitor
 mission-center

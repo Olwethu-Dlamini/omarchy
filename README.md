@@ -99,3 +99,7 @@ Setup > Defaults > Browser menu sets this with `xdg-settings`, which writes `mim
 click. I installed Mission Center and bound it to **Super+Shift+Ctrl+T**. **Super+Ctrl+T** still
 opens btop, so both are one chord apart.
 ([`config/hypr/bindings.lua`](config/hypr/bindings.lua))
+
+### 15 September
+
+**FileZilla** for moving files to and from servers over SFTP.
