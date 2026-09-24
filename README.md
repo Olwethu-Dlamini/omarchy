@@ -94,3 +94,8 @@ have to look at the keyboard, and they cover OSC-8 hyperlinks too, not only bare
 **Brave as the default browser.** Links from other apps now open in Brave. Omarchy's
 Setup > Defaults > Browser menu sets this with `xdg-settings`, which writes `mimeapps.list`.
 ([`config/mimeapps.list`](config/mimeapps.list))
+
+**A graphical system monitor.** btop is great, but sometimes I want graphs and a process list I can
+click. I installed Mission Center and bound it to **Super+Shift+Ctrl+T**. **Super+Ctrl+T** still
+opens btop, so both are one chord apart.
+([`config/hypr/bindings.lua`](config/hypr/bindings.lua))
