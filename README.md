@@ -55,3 +55,10 @@ for my own tools too: Node 26.8.1, the GitHub CLI and Codex. Claude Code came fr
 environment.d copy covers anything the systemd user session starts, so Firefox-based browsers
 always run on Wayland.
 ([`config/environment.d/`](config/environment.d/omarchy-firefox-wayland.conf))
+
+**The NTFS projects drive.** My projects live on a separate NTFS partition, so I installed the NTFS
+tools and changed two git settings to go with it. NTFS has no Unix permission bits, so every file
+looks executable and git reports a mode change on all of them. `core.filemode = false` stops that.
+`core.autocrlf = input` turns any CRLF line endings into LF when I commit. I left out the
+credential-helper lines: `gh auth setup-git` writes those.
+([`config/git/config`](config/git/config))

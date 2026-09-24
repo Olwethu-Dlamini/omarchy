@@ -7,3 +7,7 @@ claude-code
 
 # Browsers
 zen-browser-bin
+
+# NTFS projects drive
+ntfs-3g
+ntfsprogs
