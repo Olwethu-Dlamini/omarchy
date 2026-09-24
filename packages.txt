@@ -25,3 +25,6 @@ kubectl
 
 # Mail
 thunderbird
+
+# Chat
+telegram-desktop

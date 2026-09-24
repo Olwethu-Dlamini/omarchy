@@ -79,3 +79,5 @@ Chromium flags, which is also what `omarchy install browser brave` puts there. B
 on Wayland, saves passwords to the GNOME keyring, supports swipe-to-go-back on the touchpad, and
 loads Omarchy's bundled extensions (copy URL, yt-dlp and a slimmer WhatsApp).
 ([`config/brave-flags.conf`](config/brave-flags.conf))
+
+**Telegram.** I installed the native desktop app instead of a web app.
