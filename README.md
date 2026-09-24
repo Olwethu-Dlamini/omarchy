@@ -72,3 +72,10 @@ ship one by default.
 
 **Thunderbird and Firefox.** Thunderbird for mail, and plain Firefox next to Zen for sites that
 misbehave in Zen.
+
+**Brave, set up like Omarchy's Chromium.** Omarchy tunes Chromium through `chromium-flags.conf`,
+and Brave reads the same flags from `brave-flags.conf`. Mine is an exact copy of Omarchy's
+Chromium flags, which is also what `omarchy install browser brave` puts there. Brave runs natively
+on Wayland, saves passwords to the GNOME keyring, supports swipe-to-go-back on the touchpad, and
+loads Omarchy's bundled extensions (copy URL, yt-dlp and a slimmer WhatsApp).
+([`config/brave-flags.conf`](config/brave-flags.conf))

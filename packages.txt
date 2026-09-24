@@ -8,6 +8,7 @@ claude-code
 # Browsers
 zen-browser-bin
 firefox
+brave-bin
 
 # NTFS projects drive
 ntfs-3g
