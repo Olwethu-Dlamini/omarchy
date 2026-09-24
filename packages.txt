@@ -11,3 +11,6 @@ zen-browser-bin
 # NTFS projects drive
 ntfs-3g
 ntfsprogs
+
+# Files
+nautilus-open-any-terminal

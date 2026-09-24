@@ -62,3 +62,6 @@ looks executable and git reports a mode change on all of them. `core.filemode = 
 `core.autocrlf = input` turns any CRLF line endings into LF when I commit. I left out the
 credential-helper lines: `gh auth setup-git` writes those.
 ([`config/git/config`](config/git/config))
+
+**"Open in Terminal" in Nautilus.** `nautilus-open-any-terminal` adds a right-click entry that
+opens the current folder in my terminal, not only in GNOME Terminal.
