@@ -90,3 +90,7 @@ mode: **Ctrl+Shift+O** labels every URL on screen, and typing a label opens that
 have to look at the keyboard, and they cover OSC-8 hyperlinks too, not only bare URLs.
 (Ctrl+Shift+U was my first choice, but foot already uses it for Unicode input.)
 ([`config/foot/foot.ini`](config/foot/foot.ini))
+
+**Brave as the default browser.** Links from other apps now open in Brave. Omarchy's
+Setup > Defaults > Browser menu sets this with `xdg-settings`, which writes `mimeapps.list`.
+([`config/mimeapps.list`](config/mimeapps.list))
