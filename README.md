@@ -219,3 +219,6 @@ yay -S --needed $(grep -v '^#' packages.txt | awk NF)
 - **Omarchy already ships most of what I need.** mise, btop, the bar, the screensaver and the
   keybinding helper (`o.bind`) were all there, and its browser installer set up Zen's Wayland
   variable for me. Most of my changes are a line or two in the right file.
+- **For a coding agent, check a free tier's tokens-per-minute limit first.** An agent sends
+  thousands of tokens of instructions with every request, before any code. If the per-minute limit
+  is smaller than that, the provider can't run the agent at all, however fast it is.
