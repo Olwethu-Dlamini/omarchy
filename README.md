@@ -145,6 +145,7 @@ with cache. The bar runs it every 3 seconds.
 | [`config/environment.d/omarchy-firefox-wayland.conf`](config/environment.d/omarchy-firefox-wayland.conf) | `~/.config/environment.d/` | Firefox and Zen on native Wayland |
 | [`config/git/config`](config/git/config) | `~/.config/git/config` | my name, NTFS-friendly `core` settings |
 | [`config/mise/config.toml`](config/mise/config.toml) | `~/.config/mise/config.toml` | Node, gh, Codex and OpenCode |
+| [`config/opencode/opencode.json`](config/opencode/opencode.json) | `~/.config/opencode/opencode.json` | autoupdate off |
 | [`packages.txt`](packages.txt) | — | everything I installed on top of Omarchy |
 
 ## Using these files
