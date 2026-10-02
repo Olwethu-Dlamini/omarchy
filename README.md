@@ -127,6 +127,39 @@ The script reads `/proc/meminfo` and counts "used" as `MemTotal - MemAvailable`,
 with cache. The bar runs it every 3 seconds.
 ([`config/omarchy/bar/scripts/ram-usage`](config/omarchy/bar/scripts/ram-usage))
 
+### 2 October: looking for a free coding agent
+
+I wanted a coding agent that runs on free models. My first try was **Qwen Code**, but the free
+Qwen sign-in it was built around has ended, so it needs an API key from somewhere else. I
+uninstalled it and switched to **OpenCode**. OpenCode keeps several providers at once, and `/models`
+switches between them mid-session, so when one free tier runs out I can move to another.
+
+`opencode auth login` saves each provider's key to `~/.local/share/opencode/auth.json`. That file is
+outside `~/.config`, so it stays out of this repo.
+
+I timed a one-word reply ("Reply with exactly: OK") on the two free providers I signed up for:
+
+| Provider | Model | Through OpenCode |
+|---|---|---|
+| NVIDIA | `gpt-oss-20b` | 25s |
+| NVIDIA | `glm-5.3-flash` | 79s |
+| NVIDIA | `kimi-k3` | 126–146s |
+| NVIDIA | `glm-5.3`, `deepseek-v4.1-flash` | no reply within 150s |
+| NVIDIA | `kimi-k2.6` | failed straight away with "Unexpected server error" |
+| Groq | `gpt-oss-120b`, `gpt-oss-20b`, `qwen3.8-27b` | rejected: "Request too large" |
+
+**NVIDIA** works, but its big models are slow on the free tier. `gpt-oss-20b` answered in 1.4s when
+called directly, so the waits come from NVIDIA queueing its large models, not from my key or
+OpenCode. A coding task takes many steps, and each one waits that long again. Two models that
+OpenCode lists for NVIDIA, `qwen3-coder-480b` and `deepseek-v4-pro`, aren't offered to my key.
+
+**Groq** is fast, about 0.7s for the same prompt sent directly, but OpenCode can't use it at all.
+The free tier allows 8,000 tokens per minute (7,000 input tokens on `qwen3.8-27b`). Every OpenCode
+request carries its instructions and tool descriptions, about 9,900–10,800 tokens before any of my
+code, so Groq rejects each one. The key still works for quick questions sent straight to Groq.
+
+So far neither gives me a big model without lag. Cerebras, Google and Mistral are next to try.
+
 ## What's in this repo
 
 | File | Goes to | What I changed |
