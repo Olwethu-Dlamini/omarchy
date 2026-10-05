@@ -264,3 +264,9 @@ yay -S --needed $(grep -v '^#' packages.txt | awk NF)
 - **For a coding agent, check a free tier's tokens-per-minute limit first.** An agent sends
   thousands of tokens of instructions with every request, before any code. If the per-minute limit
   is smaller than that, the provider can't run the agent at all, however fast it is.
+- **When the laptop feels slow, check the power profile first.** `powerprofilesctl get` takes a
+  second. Omarchy remembers a profile for AC and one for battery, so a choice made once quietly
+  sticks.
+- **A high RAM percentage isn't the same as running out.** Before blaming RAM, check
+  `/proc/pressure/memory` and `/proc/pressure/io`, and look in the journal for OOM kills. On this
+  laptop the stalls came from the CPU profile, the hard disk and crash dumps, not from memory.
