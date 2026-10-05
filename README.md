@@ -195,6 +195,10 @@ with no backtrace, and all saved dumps share 1 GiB of disk. The file goes in `/e
 sudo. systemd-coredump reads it on every crash, so nothing needs restarting.
 ([`etc/systemd/coredump.conf.d/size-limits.conf`](etc/systemd/coredump.conf.d/size-limits.conf))
 
+**Codex.** `mise upgrade codex` moved it from 0.154.0 to 0.160.0. My mise config already says
+`latest`, so the config didn't change. The 40 MB download took about 25 minutes from GitHub.
+`auto_prune` is off, so 0.154.0 is still installed if I need to go back.
+
 ## What's in this repo
 
 | File | Goes to | What I changed |
