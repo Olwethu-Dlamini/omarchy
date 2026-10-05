@@ -178,6 +178,13 @@ debug symbols, so the exact cause can't be seen. On 4 October Brave closed at 20
 record, so that one looks like a normal exit. Firefox hasn't recorded a crash since August. Codex
 0.154.0 crashed twice at exactly the same point in its database code, which makes it a Codex bug.
 
+**Power-saver on the charger.** This was the biggest one. Omarchy remembers one power profile for
+AC and one for battery, in `~/.local/state/omarchy/powerprofiles/`. Power-saver was picked for AC on
+install day and stuck, so for three weeks the CPU barely sped up even while plugged in.
+`omarchy-powerprofiles-set ac balanced` changes the remembered AC profile and applies it straight
+away. The same Python loop took 18–23s before and 4.4–5.6s after, about four times faster. Battery
+stays on power-saver.
+
 ## What's in this repo
 
 | File | Goes to | What I changed |
