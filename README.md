@@ -6,7 +6,8 @@ keyboard-driven desktop with a theme, a bar, a launcher and a lot of preinstalle
 what I've done since is small tweaks on top.
 
 This repo holds those tweaks and a journal of why I made each one. Everything under `config/`
-mirrors `~/.config/`, and it only contains files I actually changed. Omarchy's own defaults live in
+mirrors `~/.config/` and everything under `etc/` mirrors `/etc`, and they only contain files I
+actually changed. Omarchy's own defaults live in
 `/usr/share/omarchy/config/` and update with the package, so I don't copy them here.
 
 ## The machine
@@ -185,6 +186,15 @@ install day and stuck, so for three weeks the CPU barely sped up even while plug
 away. The same Python loop took 18–23s before and 4.4–5.6s after, about four times faster. Battery
 stays on power-saver.
 
+**Crash dumps.** When a program crashes, systemd saves a copy of its memory and works out a
+backtrace from it, with no size limit by default. Cypress crashed seven times on 30 September, and
+each dump ran for five minutes, used up to 4.3 GB of RAM and about three minutes of CPU, then timed
+out. The two Brave tab crashes took 4.2–4.6 GB each. With Brave already holding 5 GB of my 11, a
+crash was enough to make everything else crawl for a few minutes. Now a dump over 1 GiB is cut off
+with no backtrace, and all saved dumps share 1 GiB of disk. The file goes in `/etc`, so it needs
+sudo. systemd-coredump reads it on every crash, so nothing needs restarting.
+([`etc/systemd/coredump.conf.d/size-limits.conf`](etc/systemd/coredump.conf.d/size-limits.conf))
+
 ## What's in this repo
 
 | File | Goes to | What I changed |
@@ -204,6 +214,7 @@ stays on power-saver.
 | [`config/git/config`](config/git/config) | `~/.config/git/config` | my name, NTFS-friendly `core` settings |
 | [`config/mise/config.toml`](config/mise/config.toml) | `~/.config/mise/config.toml` | Node, gh, Codex and OpenCode |
 | [`config/opencode/opencode.json`](config/opencode/opencode.json) | `~/.config/opencode/opencode.json` | autoupdate off |
+| [`etc/systemd/coredump.conf.d/size-limits.conf`](etc/systemd/coredump.conf.d/size-limits.conf) | `/etc/systemd/coredump.conf.d/` | crash dumps capped at 1 GiB |
 | [`packages.txt`](packages.txt) | — | everything I installed on top of Omarchy |
 
 ## Using these files
@@ -213,6 +224,12 @@ Copy a file into place, then reload whatever reads it:
 ```bash
 cp config/omarchy/shell.json ~/.config/omarchy/shell.json
 omarchy-restart-shell        # the bar picks up shell.json and bar scripts
+```
+
+Files under `etc/` belong in `/etc` and need sudo:
+
+```bash
+sudo install -Dm644 etc/systemd/coredump.conf.d/size-limits.conf /etc/systemd/coredump.conf.d/size-limits.conf
 ```
 
 `hyprctl reload` reloads Hyprland after a change under `~/.config/hypr/`. Terminals read their
