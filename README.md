@@ -18,7 +18,7 @@ mirrors `~/.config/`, and it only contains files I actually changed. Omarchy's o
 | RAM | about 11.4 GiB usable |
 | Screens | built-in 1920×1080 panel, plus an HP V214a 1080p monitor over HDMI |
 | Omarchy | 4.0.3, Tokyo Night theme |
-| Projects drive | a separate NTFS partition, mounted at `/run/media/oll/Linux` |
+| Projects drive | a separate NTFS partition on a 5400rpm hard disk, mounted at `/run/media/oll/Linux` |
 
 ## Journal
 
@@ -159,6 +159,24 @@ request carries its instructions and tool descriptions, about 9,900–10,800 tok
 code, so Groq rejects each one. The key still works for quick questions sent straight to Groq.
 
 So far neither gives me a big model without lag. Cerebras, Google and Mistral are next to try.
+
+### 5 October: why the laptop felt slow
+
+Some days the laptop crawled even with the RAM bar at 60%, and Brave and Firefox seemed to crash
+all the time. I went through the logs, and running out of RAM wasn't it: nothing had been killed
+for lack of memory since the last boot.
+
+**The projects drive is a hard disk.** It's a 1 TB WD laptop drive spinning at 5400rpm, not an
+SSD. Since the last boot it had been busy for about 7½ hours, around seven times longer than the
+NVMe that holds the system, even though it handled fewer requests. The kernel's pressure stats
+showed every task stalled on disk 4–6% of the time. Anything that reads a lot of small files in a
+project, like git, `node_modules` or an agent scanning the repo, waits on that disk. I'm leaving my
+projects there for now.
+
+**The crashes.** On 3 October two Brave tabs crashed, not the whole browser. Brave doesn't publish
+debug symbols, so the exact cause can't be seen. On 4 October Brave closed at 20:29 with no crash
+record, so that one looks like a normal exit. Firefox hasn't recorded a crash since August. Codex
+0.154.0 crashed twice at exactly the same point in its database code, which makes it a Codex bug.
 
 ## What's in this repo
 
