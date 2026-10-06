@@ -320,3 +320,6 @@ yay -S --needed $(grep -v '^#' packages.txt | awk NF)
 - **A high RAM percentage isn't the same as running out.** Before blaming RAM, check
   `/proc/pressure/memory` and `/proc/pressure/io`, and look in the journal for OOM kills. On this
   laptop the stalls came from the CPU profile, the hard disk and crash dumps, not from memory.
+- **When screen sharing is missing an option, check the portal before the app.** On Wayland the
+  browser only shows what the portal tells it about. One `busctl --user get-property` call
+  against xdph shows whether it's answering, and should print `u 7`.
