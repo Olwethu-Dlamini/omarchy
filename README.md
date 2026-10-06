@@ -254,6 +254,8 @@ workaround is to wait a second or two after picking a screen before clicking Bra
 | [`config/git/config`](config/git/config) | `~/.config/git/config` | my name, NTFS-friendly `core` settings |
 | [`config/mise/config.toml`](config/mise/config.toml) | `~/.config/mise/config.toml` | Node, gh, Codex and OpenCode |
 | [`config/opencode/opencode.json`](config/opencode/opencode.json) | `~/.config/opencode/opencode.json` | autoupdate off |
+| [`config/systemd/user/portal-watchdog.service`](config/systemd/user/portal-watchdog.service) | `~/.config/systemd/user/` | restarts the screen-share portal if it stops answering |
+| [`config/systemd/user/portal-watchdog.timer`](config/systemd/user/portal-watchdog.timer) | `~/.config/systemd/user/` | runs that check every 5 minutes |
 | [`etc/systemd/coredump.conf.d/size-limits.conf`](etc/systemd/coredump.conf.d/size-limits.conf) | `/etc/systemd/coredump.conf.d/` | crash dumps capped at 1 GiB |
 | [`packages.txt`](packages.txt) | — | everything I installed on top of Omarchy |
 
