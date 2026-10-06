@@ -1,0 +1,9 @@
+[Unit]
+Description=Restart the Hyprland screen-share portal if it stops answering
+PartOf=graphical-session.target
+After=graphical-session.target
+
+[Service]
+Type=oneshot
+# xdph answers this in milliseconds. When it hangs, Brave's "Entire Screen" list comes up empty.
+ExecStart=/bin/sh -c 'timeout 10 busctl --user get-property org.freedesktop.impl.portal.desktop.hyprland /org/freedesktop/portal/desktop org.freedesktop.impl.portal.ScreenCast AvailableSourceTypes >/dev/null && exit 0; echo "xdg-desktop-portal-hyprland is not answering, restarting the portals"; systemctl --user restart xdg-desktop-portal-hyprland.service xdg-desktop-portal.service'
