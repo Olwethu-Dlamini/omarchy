@@ -199,6 +199,42 @@ sudo. systemd-coredump reads it on every crash, so nothing needs restarting.
 `latest`, so the config didn't change. The 40 MB download took about 25 minutes from GitHub.
 `auto_prune` is off, so 0.154.0 is still installed if I need to go back.
 
+### 6 October: Teams wouldn't share my whole screen
+
+In Teams meetings in Brave I could share a window or a tab, but there was no way to share the
+whole screen.
+
+**Brave and Teams weren't the problem.** On Wayland, Brave doesn't list screens itself. It asks
+the desktop portal, and on Hyprland that's `xdg-desktop-portal-hyprland` (xdph). Brave's log
+showed every request timing out: `Failed to request session: Timeout was reached`, then
+`ScreenCastPortal failed`. With no answer from the portal, Brave's **Entire Screen** tab had
+nothing in it, so Teams had nothing to offer.
+
+**xdph was stuck.** It had been running since 29 September with its main thread spinning at 100%
+of one core: 7½ hours of CPU in a week. It hadn't logged anything since start-up, and it didn't
+answer even a simple D-Bus question. I couldn't get a stack trace to see where it was stuck,
+because Arch's `ptrace_scope=1` blocks that without sudo. `systemctl --user restart
+xdg-desktop-portal-hyprland xdg-desktop-portal` brought it back straight away. Omarchy's share
+picker then opened with both monitors, and sharing my entire screen in a real Teams meeting
+worked.
+
+**A watchdog so it can't happen silently again.** A small systemd user timer asks xdph for its
+screen-share source types every 5 minutes. A healthy xdph answers in milliseconds. If there's no
+answer within 10 seconds, the timer restarts both portal services and logs why. To test it, I
+froze xdph with `kill -STOP`. The watchdog restarted it on the next check, and the new process
+answered straight away. A restart would cut a share that's in progress, but by then the portal
+isn't working anyway.
+([`config/systemd/user/`](config/systemd/user/portal-watchdog.service))
+
+**Two picks per share.** Chromium-based browsers ask the portal twice for every share: once for
+the preview in their own dialog and once for the real share. Omarchy's `xdph.conf` sets
+`allow_token_by_default = true`, so after the first pick the second one happens on its own. In
+one of my tests the share ended right after I picked a screen, with Brave logging
+`PipeWireThreadLoop already exists`. Others describe the same race between the preview and the
+real share
+([write-up](https://gist.github.com/MasonRhodesDev/088703c61c3f1ac67b1424a193965445)), and their
+workaround is to wait a second or two after picking a screen before clicking Brave's **Share**.
+
 ## What's in this repo
 
 | File | Goes to | What I changed |
