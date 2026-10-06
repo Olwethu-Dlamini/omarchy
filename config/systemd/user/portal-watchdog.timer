@@ -1,0 +1,10 @@
+[Unit]
+Description=Check every 5 minutes that the screen-share portal answers
+PartOf=graphical-session.target
+
+[Timer]
+OnActiveSec=2min
+OnUnitActiveSec=5min
+
+[Install]
+WantedBy=graphical-session.target
