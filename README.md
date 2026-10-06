@@ -274,6 +274,14 @@ Files under `etc/` belong in `/etc` and need sudo:
 sudo install -Dm644 etc/systemd/coredump.conf.d/size-limits.conf /etc/systemd/coredump.conf.d/size-limits.conf
 ```
 
+The systemd user units need reloading, and the timer needs enabling once:
+
+```bash
+cp config/systemd/user/portal-watchdog.* ~/.config/systemd/user/
+systemctl --user daemon-reload
+systemctl --user enable --now portal-watchdog.timer
+```
+
 `hyprctl reload` reloads Hyprland after a change under `~/.config/hypr/`. Terminals read their
 config when they start. `config/environment.d/` only applies after logging out and back in.
 
