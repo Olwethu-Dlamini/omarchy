@@ -235,6 +235,15 @@ real share
 ([write-up](https://gist.github.com/MasonRhodesDev/088703c61c3f1ac67b1424a193965445)), and their
 workaround is to wait a second or two after picking a screen before clicking Brave's **Share**.
 
+### 7 October: the watchdog's first day
+
+The portal hasn't hung again. Since I set it up yesterday afternoon, the watchdog has run 60
+checks and never had to restart anything. xdph is still the same process I restarted yesterday.
+It has used no measurable CPU and still answers `u 7`. The laptop was suspended from 21:49 to
+07:44, and timers don't run during suspend, so those 60 checks cover the hours it was awake.
+xdph also came back from that suspend without trouble. It took a week to hang last time, so one
+quiet day doesn't prove much.
+
 ## What's in this repo
 
 | File | Goes to | What I changed |
