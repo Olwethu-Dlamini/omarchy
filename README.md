@@ -301,6 +301,61 @@ To install the packages:
 yay -S --needed $(grep -v '^#' packages.txt | awk NF)
 ```
 
+## If screen sharing breaks
+
+These are the steps that found and fixed the Teams problem on 6 October, in the order I'd run
+them again.
+
+**1. Is the portal answering?** On Wayland the browser only knows about the screens the portal
+tells it about.
+
+```bash
+busctl --user get-property org.freedesktop.impl.portal.desktop.hyprland \
+  /org/freedesktop/portal/desktop org.freedesktop.impl.portal.ScreenCast AvailableSourceTypes
+```
+
+`u 7` means it's working: screens, windows and regions can all be shared. If the command hangs,
+the portal is stuck.
+
+**2. Is it spinning?**
+
+```bash
+ps -o etime,time,stat -p "$(systemctl --user show -p MainPID --value xdg-desktop-portal-hyprland)"
+```
+
+`TIME` is CPU time used. A healthy portal uses a few seconds a day. When it hung, it had used
+7½ hours in a week.
+
+**3. Restart it.** This is the fix. It's safe: apps reconnect on their own, and any share in
+progress just stops.
+
+```bash
+systemctl --user restart xdg-desktop-portal-hyprland xdg-desktop-portal
+```
+
+**4. Check the watchdog.** The portal watchdog does step 3 for me when step 1 gets no answer.
+These show when it last ran and whether it ever had to restart anything:
+
+```bash
+systemctl --user list-timers portal-watchdog.timer
+journalctl --user -u portal-watchdog.service -g 'not answering'
+```
+
+**5. Test without a meeting.** The WebRTC
+[screen-share sample](https://webrtc.github.io/samples/src/content/getusermedia/getdisplaymedia/)
+asks for a share the same way Teams does. If the **Entire Screen** tab is empty there, the
+problem is on my laptop, not in Teams.
+
+**6. Read Brave's own log.** Start Brave from a terminal and try to share:
+
+```bash
+brave 2>&1 | grep -iE 'portal|pipewire|screencast'
+```
+
+`Failed to request session: Timeout was reached` means the portal isn't answering (go back to
+step 3). `PipeWireThreadLoop already exists` means the preview and the real share collided: pick
+the screen, wait a second or two, then click **Share**.
+
 ## Lessons so far
 
 - **Change your own file, not Omarchy's.** Everything under `/usr/share/omarchy` belongs to the
