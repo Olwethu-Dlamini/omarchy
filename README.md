@@ -335,6 +335,19 @@ ps -o etime,time,stat -p "$(systemctl --user show -p MainPID --value xdg-desktop
 `TIME` is CPU time used. A healthy portal uses a few seconds a day. When it hung, it had used
 7½ hours in a week.
 
+**Before restarting, save a stack trace.** Nobody knows yet why xdph got stuck, and a trace
+shows where. Arch's `ptrace_scope=1` blocks this without sudo. `sudo` also clears
+`DEBUGINFOD_URLS`, so pass it explicitly, or the trace won't have function names:
+
+```bash
+sudo DEBUGINFOD_URLS=https://debuginfod.archlinux.org eu-stack -p \
+  "$(systemctl --user show -p MainPID --value xdg-desktop-portal-hyprland)" > ~/xdph-hang.txt
+```
+
+The watchdog restarts a stuck portal within 5 minutes, so this only works if I notice before it
+fires. To keep it stuck long enough to trace, stop the watchdog first with
+`systemctl --user stop portal-watchdog.timer`, then start it again afterwards.
+
 **3. Restart it.** This is the fix. It's safe: apps reconnect on their own, and any share in
 progress just stops.
 
