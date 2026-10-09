@@ -280,6 +280,20 @@ their own, and sound kept working, so nothing looked wrong from the outside.
 journalctl --user -b -g 'pipewire.service: Main process exited'
 coredumpctl info pipewire | grep -E 'Timestamp|Signal|#[0-9]'
 ```
+**Brave didn't come back with it.** Brave does all its audio in one helper process, started
+with `--utility-sub-type=audio.mojom.AudioService`. Mine had been running since 14:21 the day
+before, so it lived through the crash. It did reconnect for playback: `pactl list clients`
+showed it, and a tab was playing through it. But every microphone request still failed. The best
+explanation from what I could see is that the helper kept the device list it got over the
+connection that died, so it had no inputs to offer. The crash hurt Brave in other ways too: four
+tabs crashed in the quarter hour after it, at 08:02, 08:03, 08:04 and 08:14, all renderer
+processes.
+
+```bash
+ps -eo pid,lstart,args | grep 'audio.mojom.AudioService' | grep -v grep
+```
+
+If that process is older than PipeWire's last start, it's the one to look at.
 ## What's in this repo
 
 | File | Goes to | What I changed |
