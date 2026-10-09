@@ -539,3 +539,7 @@ relaunch is due anyway.
 - **When screen sharing is missing an option, check the portal before the app.** On Wayland the
   browser only shows what the portal tells it about. One `busctl --user get-property` call
   against xdph shows whether it's answering, and should print `u 7`.
+- **When an app can't find a device that the system can see, ask whether the daemon restarted.**
+  `systemctl --user show pipewire -p NRestarts` answers in a second. A restart is invisible from
+  the desktop because everything reconnects, but an app's long-lived helper process can keep a
+  view of the devices from before it.
