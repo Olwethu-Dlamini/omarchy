@@ -128,6 +128,21 @@ The script reads `/proc/meminfo` and counts "used" as `MemTotal - MemAvailable`,
 with cache. The bar runs it every 3 seconds.
 ([`config/omarchy/bar/scripts/ram-usage`](config/omarchy/bar/scripts/ram-usage))
 
+### 29 September: a noise-cancelled microphone
+
+The laptop mic picks up the fan and the keyboard. I installed `noise-suppression-for-voice`, which
+is the RNNoise plugin, and added a PipeWire filter chain that reads the built-in mic and publishes
+a second source called **Noise Canceled Mic**. It's set as the default input, so every app records
+through it without being told. The filter is mono, which matters later.
+
+To hear what it does, record five seconds and play them back:
+
+```bash
+timeout 5 pw-record --target rnnoise_source ~/mictest.wav; pw-play ~/mictest.wav
+```
+
+Deleting the file and running `systemctl --user restart pipewire` undoes it.
+([`config/pipewire/pipewire.conf.d/99-input-denoising.conf`](config/pipewire/pipewire.conf.d/99-input-denoising.conf))
 ### 2 October: looking for a free coding agent
 
 I wanted a coding agent that runs on free models. My first try was **Qwen Code**, but the free
