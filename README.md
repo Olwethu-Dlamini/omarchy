@@ -259,6 +259,16 @@ It has used no measurable CPU and still answers `u 7`. The laptop was suspended 
 xdph also came back from that suspend without trouble. It took a week to hang last time, so one
 quiet day doesn't prove much.
 
+### 9 October: Brave said there was no microphone
+
+A page in Brave asked for the microphone and was told there wasn't one.
+
+**The microphone was there.** `wpctl status` listed the built-in input (the ALC257 codec) and
+the Noise Canceled Mic, with the filtered one as the default source. `amixer` showed capture at
+100% and not muted. Recording four seconds from each source with `pw-record` gave a file with
+sound in it: the raw mic peaked at full scale, and the filtered one was almost silent, which is
+what a noise filter should do in a quiet room. So the hardware worked and PipeWire could read it.
+The problem was between PipeWire and Brave.
 ## What's in this repo
 
 | File | Goes to | What I changed |
