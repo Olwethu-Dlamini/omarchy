@@ -543,3 +543,5 @@ relaunch is due anyway.
   `systemctl --user show pipewire -p NRestarts` answers in a second. A restart is invisible from
   the desktop because everything reconnects, but an app's long-lived helper process can keep a
   view of the devices from before it.
+- **Restart the smallest thing that's stale.** For the missing microphone that was one Brave
+  helper process, not Brave and not PipeWire. Every tab stayed open and nothing else noticed.
