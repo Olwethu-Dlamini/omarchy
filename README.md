@@ -484,6 +484,29 @@ coredumpctl list pipewire
 
 `NRestarts=0` and no dumps means it hasn't. Otherwise `coredumpctl info pipewire` shows the
 backtrace.
+**4. Find the app's audio helper.** Brave keeps one process for all its audio. If it started
+before PipeWire's `ActiveEnterTimestamp` from step 3, it lived through the restart.
+
+```bash
+ps -eo pid,lstart,args | grep 'audio.mojom.AudioService' | grep -v grep
+pactl list clients short | grep -i brave
+```
+
+**5. Restart the helper.** This is the fix. Tabs stay open; a tab that's playing goes quiet
+once. Brave starts a new helper the next time a tab plays or records, so don't expect to see one
+until then.
+
+```bash
+pkill -TERM -f 'utility-sub-type=audio.mojom.AudioService'
+```
+
+Then try the microphone again on the
+[WebRTC microphone sample](https://webrtc.github.io/samples/src/content/getusermedia/audio/),
+which asks for it the same way any site does.
+
+**6. If it still can't find one, relaunch Brave.** `brave://restart` keeps the tabs. If
+`pactl list clients short` showed `brave (deleted)`, Brave was upgraded while it ran, and the
+relaunch is due anyway.
 ## Lessons so far
 
 - **Change your own file, not Omarchy's.** Everything under `/usr/share/omarchy` belongs to the
