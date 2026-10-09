@@ -294,6 +294,16 @@ ps -eo pid,lstart,args | grep 'audio.mojom.AudioService' | grep -v grep
 ```
 
 If that process is older than PipeWire's last start, it's the one to look at.
+**The fix: restart that one helper.** At 08:44 I sent it a TERM:
+
+```bash
+pkill -TERM -f 'utility-sub-type=audio.mojom.AudioService'
+```
+
+Brave doesn't start a new one straight away. It waits until a tab next plays or records, so the
+process list stays empty for a while and that's normal. Mine came back at 08:51 and connected to
+PipeWire as a new client. The tab that had been playing went quiet once. Nothing crashed. No
+browser restart and no PipeWire restart, so every tab stayed where it was.
 ## What's in this repo
 
 | File | Goes to | What I changed |
