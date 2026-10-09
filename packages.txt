@@ -32,3 +32,6 @@ thunderbird
 
 # Chat
 telegram-desktop
+
+# Microphone
+noise-suppression-for-voice
