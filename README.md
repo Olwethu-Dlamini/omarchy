@@ -265,6 +265,7 @@ quiet day doesn't prove much.
 | [`config/opencode/opencode.json`](config/opencode/opencode.json) | `~/.config/opencode/opencode.json` | autoupdate off |
 | [`config/systemd/user/portal-watchdog.service`](config/systemd/user/portal-watchdog.service) | `~/.config/systemd/user/` | restarts the screen-share portal if it stops answering |
 | [`config/systemd/user/portal-watchdog.timer`](config/systemd/user/portal-watchdog.timer) | `~/.config/systemd/user/` | runs that check every 5 minutes |
+| [`config/pipewire/pipewire.conf.d/99-input-denoising.conf`](config/pipewire/pipewire.conf.d/99-input-denoising.conf) | `~/.config/pipewire/pipewire.conf.d/` | a noise-cancelled copy of the mic, set as the default input |
 | [`etc/systemd/coredump.conf.d/size-limits.conf`](etc/systemd/coredump.conf.d/size-limits.conf) | `/etc/systemd/coredump.conf.d/` | crash dumps capped at 1 GiB |
 | [`packages.txt`](packages.txt) | — | everything I installed on top of Omarchy |
 
