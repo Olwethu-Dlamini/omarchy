@@ -451,6 +451,39 @@ brave 2>&1 | grep -iE 'portal|pipewire|screencast'
 step 3). `PipeWireThreadLoop already exists` means the preview and the real share collided: pick
 the screen, wait a second or two, then click **Share**.
 
+## If the microphone goes missing
+
+These are the steps that found and fixed the Brave problem on 9 October, in the order I'd run
+them again. The first two take a minute and rule out the laptop.
+
+**1. Can PipeWire hear it?**
+
+```bash
+wpctl status | sed -n '/Sources:/,/Filters:/p'
+timeout 4 pw-record --target rnnoise_source ~/mictest.wav; pw-play ~/mictest.wav
+```
+
+Sources should list the built-in input and `rnnoise_source`, with a `*` on the filtered one. If
+the recording plays back with sound in it, the microphone and PipeWire are fine and the problem
+is in the app.
+
+**2. Is it muted?** The bar's microphone icon toggles mute with a click, so it's easy to hit.
+
+```bash
+wpctl get-volume @DEFAULT_AUDIO_SOURCE@
+amixer -c 0 sget Capture | grep -E '\[(on|off)\]'
+```
+
+**3. Did PipeWire restart?** A restart is silent: everything reconnects and sound keeps
+working, but a long-running app can be left with a stale view of the devices.
+
+```bash
+systemctl --user show pipewire -p NRestarts -p ActiveEnterTimestamp
+coredumpctl list pipewire
+```
+
+`NRestarts=0` and no dumps means it hasn't. Otherwise `coredumpctl info pipewire` shows the
+backtrace.
 ## Lessons so far
 
 - **Change your own file, not Omarchy's.** Everything under `/usr/share/omarchy` belongs to the
