@@ -269,6 +269,17 @@ the Noise Canceled Mic, with the filtered one as the default source. `amixer` sh
 sound in it: the raw mic peaked at full scale, and the filtered one was almost silent, which is
 what a noise filter should do in a quiet room. So the hardware worked and PipeWire could read it.
 The problem was between PipeWire and Brave.
+**PipeWire had crashed that morning.** The user journal had it: at 08:01:49 `pipewire.service:
+Main process exited, code=dumped, status=11/SEGV`, after 13½ hours running. The core dump's
+backtrace ends in `pw_global_update_permissions`, called from PipeWire's access module while it
+handled a client message (pipewire 1.6.8). systemd restarted it within the same second.
+WirePlumber, the shell and the desktop portal each logged `connection error` and reconnected on
+their own, and sound kept working, so nothing looked wrong from the outside.
+
+```bash
+journalctl --user -b -g 'pipewire.service: Main process exited'
+coredumpctl info pipewire | grep -E 'Timestamp|Signal|#[0-9]'
+```
 ## What's in this repo
 
 | File | Goes to | What I changed |
