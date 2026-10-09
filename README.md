@@ -304,6 +304,18 @@ Brave doesn't start a new one straight away. It waits until a tab next plays or 
 process list stays empty for a while and that's normal. Mine came back at 08:51 and connected to
 PipeWire as a new client. The tab that had been playing went quiet once. Nothing crashed. No
 browser restart and no PipeWire restart, so every tab stayed where it was.
+**Two things that looked like the cause and weren't.** That morning I had also run
+`yay -S brave-bin`, which put Brave 1.97.56 on disk while the Brave from the day before was still
+running. `/proc/<pid>/exe` for every Brave process pointed at a deleted file, and `pactl list
+clients` named the client `brave (deleted)`. That means a relaunch is due, but it isn't what took
+the microphone away: the audio helper came from the old build like the rest of that Brave, and
+Linux keeps the old file alive for as long as something is running it.
+
+The other was in the shell's log. Whenever the audio panel is open, omarchy-shell prints
+`quickshell.service.pipewire.peak ... is missing channels present in capture stream` many times a
+second, because the panel's input level meter expects a stereo node and the Noise Canceled Mic is
+mono. The meter just doesn't move. It's noise in the journal, not a fault, and the raw mic still
+shows up under Sources.
 ## What's in this repo
 
 | File | Goes to | What I changed |
