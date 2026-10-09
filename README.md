@@ -364,6 +364,16 @@ systemctl --user daemon-reload
 systemctl --user enable --now portal-watchdog.timer
 ```
 
+The microphone filter needs the RNNoise plugin and a PipeWire restart:
+
+```bash
+yay -S --needed noise-suppression-for-voice
+cp config/pipewire/pipewire.conf.d/99-input-denoising.conf ~/.config/pipewire/pipewire.conf.d/
+systemctl --user restart pipewire
+```
+
+Restart PipeWire before opening the browser. A browser that's already running keeps its audio
+helper across the restart and may stop seeing the microphone (see 9 October in the journal).
 `hyprctl reload` reloads Hyprland after a change under `~/.config/hypr/`. Terminals read their
 config when they start. `config/environment.d/` only applies after logging out and back in.
 
