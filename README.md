@@ -643,3 +643,7 @@ middle of kernel errors, the laptop crashed, and that crash is the real problem.
   view of the devices from before it.
 - **Restart the smallest thing that's stale.** For the missing microphone that was one Brave
   helper process, not Brave and not PipeWire. Every tab stayed open and nothing else noticed.
+- **A drive error at boot is often the last shutdown's fault.** `volume is dirty` means the drive
+  wasn't unmounted, so the useful question is how the previous session ended. Clearing the mark on
+  every mount makes the error go away. Finding out why the laptop went down is what stops it
+  happening.
