@@ -316,6 +316,47 @@ The other was in the shell's log. Whenever the audio panel is open, omarchy-shel
 second, because the panel's input level meter expects a stereo node and the Noise Canceled Mic is
 mono. The meter just doesn't move. It's noise in the journal, not a fault, and the raw mic still
 shows up under Sources.
+
+### 13 October: the projects drive wouldn't mount after a restart
+
+After a restart, opening the projects drive gave an error instead of my files. The kernel log said
+why:
+
+```
+ntfs3(sda4): It is recommended to use chkdsk.
+ntfs3(sda4): volume is dirty and "force" flag is not set!
+```
+
+**What "dirty" means.** NTFS marks a drive dirty while it's mounted and clears the mark when it's
+unmounted cleanly. If the laptop goes down without unmounting, the mark stays. Linux's `ntfs3`
+driver then refuses the drive, because properly checking it is chkdsk's job, and chkdsk is Windows
+only. The same error is in the log on 9, 10 and 13 October. On 10 October I cleared it by hand
+with `sudo ntfsfix -d /dev/sda4`, and it came back after the next bad shutdown.
+
+**Why the shutdowns weren't clean.** The session before the 13 October restart never shut down. At
+20:46 the kernel logged a run of `zram: Decompression failed!` errors, meaning memory couldn't be
+read back from the compressed swap, and the log ends there. At the next start the boot partition
+was flagged `Fs was not properly unmounted` too, as it was on 9 October. That crash is a separate
+problem and I haven't solved it yet.
+
+**The fix: clear the mark just before mounting.** A systemd service, `ntfs-clear-dirty@.service`,
+runs `ntfsfix -d` on a drive by its UUID. Each drive's fstab line requires it, so it runs every
+time the drive mounts. `ntfsfix` isn't chkdsk: it fixes a few basic inconsistencies, empties the
+NTFS journal and clears the mark. It still refuses a drive that Windows left hibernated, so in that
+case the mount fails, as it should. Both NTFS partitions on the hard disk use it: `Linux` (sda4)
+and `escape` (sda5). The fstab lines keep the paths udisks used, `/run/media/oll/Linux` and
+`/run/media/oll/escape`, and each drive mounts the first time something opens it. `nofail` means a
+problem with either drive can't stop the laptop booting, and `x-gvfs-show` keeps them in Nautilus'
+sidebar.
+([`etc/systemd/system/ntfs-clear-dirty@.service`](etc/systemd/system/ntfs-clear-dirty@.service),
+[`etc/fstab.ntfs`](etc/fstab.ntfs))
+
+**Tested on a dirty drive.** `Linux` was still marked dirty when I installed the fix. Opening the
+folder started the service, which also found and fixed a mismatch between the drive's file table
+and its backup copy (`$MFTMirr` record 3). The drive mounted about three seconds later with no
+error. `escape` was already mounted by udisks, so its fstab line takes over from the next boot. The
+next restart is the real test.
+
 ## What's in this repo
 
 | File | Goes to | What I changed |
