@@ -380,6 +380,8 @@ next restart is the real test.
 | [`config/systemd/user/portal-watchdog.timer`](config/systemd/user/portal-watchdog.timer) | `~/.config/systemd/user/` | runs that check every 5 minutes |
 | [`config/pipewire/pipewire.conf.d/99-input-denoising.conf`](config/pipewire/pipewire.conf.d/99-input-denoising.conf) | `~/.config/pipewire/pipewire.conf.d/` | a noise-cancelled copy of the mic, set as the default input |
 | [`etc/systemd/coredump.conf.d/size-limits.conf`](etc/systemd/coredump.conf.d/size-limits.conf) | `/etc/systemd/coredump.conf.d/` | crash dumps capped at 1 GiB |
+| [`etc/systemd/system/ntfs-clear-dirty@.service`](etc/systemd/system/ntfs-clear-dirty@.service) | `/etc/systemd/system/` | clears the NTFS dirty mark before a drive mounts |
+| [`etc/fstab.ntfs`](etc/fstab.ntfs) | added to the end of `/etc/fstab` | mounts the `Linux` and `escape` drives through that service |
 | [`packages.txt`](packages.txt) | — | everything I installed on top of Omarchy |
 
 ## Using these files
