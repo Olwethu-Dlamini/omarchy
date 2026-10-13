@@ -572,6 +572,49 @@ which asks for it the same way any site does.
 **6. If it still can't find one, relaunch Brave.** `brave://restart` keeps the tabs. If
 `pactl list clients short` showed `brave (deleted)`, Brave was upgraded while it ran, and the
 relaunch is due anyway.
+
+## If a drive won't mount
+
+These are the steps that found and fixed the projects drive on 13 October.
+
+**1. What does the kernel say?**
+
+```bash
+journalctl -k -b -g 'ntfs3'
+```
+
+`volume is dirty` means the drive wasn't unmounted cleanly; go to step 2. `Windows is hibernated`
+means Windows still has the drive open. Boot Windows and shut it down fully, with Fast Startup
+off, and don't force the drive open from Linux.
+
+**2. Did the cleaner run?**
+
+```bash
+journalctl -b -u 'ntfs-clear-dirty@*'
+systemctl status run-media-oll-Linux.mount
+```
+
+A healthy run ends with `processed successfully`, then `Mounted /run/media/oll/Linux`.
+
+**3. Clear it by hand.** This is what the service does:
+
+```bash
+sudo umount /run/media/oll/Linux
+sudo ntfsfix -d /dev/disk/by-uuid/3418CD6F18CD3122
+ls /run/media/oll/Linux
+```
+
+The `ls` mounts the drive again.
+
+**4. Find out why it was dirty.** Look at how the previous session ended:
+
+```bash
+journalctl -b -1 -n 50 --no-pager
+```
+
+A clean shutdown ends with systemd stopping services and unmounting. If the log stops in the
+middle of kernel errors, the laptop crashed, and that crash is the real problem.
+
 ## Lessons so far
 
 - **Change your own file, not Omarchy's.** Everything under `/usr/share/omarchy` belongs to the
