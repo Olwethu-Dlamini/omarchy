@@ -1,0 +1,5 @@
+# NTFS data drives on sda. Dirty flag cleared before each mount by ntfs-clear-dirty@.service
+# sda4 "Linux"
+UUID=3418CD6F18CD3122	/run/media/oll/Linux	ntfs3	nosuid,nodev,relatime,uid=1000,gid=1000,acl,iocharset=utf8,prealloc,nofail,x-systemd.automount,x-systemd.device-timeout=5s,x-systemd.requires=ntfs-clear-dirty@3418CD6F18CD3122.service,x-gvfs-show	0 0
+# sda5 "escape"
+UUID=CCC692BCC692A66C	/run/media/oll/escape	ntfs3	nosuid,nodev,relatime,uid=1000,gid=1000,acl,iocharset=utf8,prealloc,nofail,x-systemd.automount,x-systemd.device-timeout=5s,x-systemd.requires=ntfs-clear-dirty@CCC692BCC692A66C.service,x-gvfs-show	0 0
