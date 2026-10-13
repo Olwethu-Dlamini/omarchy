@@ -1,0 +1,14 @@
+[Unit]
+Description=Clear the NTFS dirty flag on %i before mounting
+Documentation=https://github.com/Olwethu-Dlamini/omarchy
+DefaultDependencies=no
+BindsTo=dev-disk-by\x2duuid-%i.device
+After=dev-disk-by\x2duuid-%i.device
+Before=umount.target
+Conflicts=umount.target
+
+[Service]
+Type=oneshot
+# Clears only the "dirty" mark left by an unclean shutdown. ntfsfix still
+# refuses a volume Windows left hibernated, so the mount fails safe then.
+ExecStart=/usr/bin/ntfsfix -d /dev/disk/by-uuid/%i
