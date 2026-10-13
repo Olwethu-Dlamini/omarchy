@@ -399,6 +399,18 @@ Files under `etc/` belong in `/etc` and need sudo:
 sudo install -Dm644 etc/systemd/coredump.conf.d/size-limits.conf /etc/systemd/coredump.conf.d/size-limits.conf
 ```
 
+The NTFS drive fix is a service plus lines added to the end of `/etc/fstab`. The UUIDs in
+`etc/fstab.ntfs` are my drives'; `lsblk -f` shows the right ones for another machine.
+
+```bash
+sudo install -Dm644 etc/systemd/system/ntfs-clear-dirty@.service /etc/systemd/system/ntfs-clear-dirty@.service
+sudo cp /etc/fstab /etc/fstab.bak
+sudo tee -a /etc/fstab < etc/fstab.ntfs > /dev/null
+sudo systemctl daemon-reload
+```
+
+A drive udisks has already mounted keeps that mount until the next boot.
+
 The systemd user units need reloading, and the timer needs enabling once:
 
 ```bash
