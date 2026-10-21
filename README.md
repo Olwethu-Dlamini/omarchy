@@ -16,7 +16,7 @@ actually changed. Omarchy's own defaults live in
 |---|---|
 | Laptop | Lenovo IdeaPad L3 15IML05 |
 | CPU | Intel Core i5-10210U, 4 cores / 8 threads |
-| RAM | about 11.4 GiB usable |
+| RAM | about 11.4 GiB usable: 4 GiB soldered SK Hynix plus an 8 GiB no-name SODIMM, both DDR4-2667 |
 | Screens | built-in 1920×1080 panel, plus an HP V214a 1080p monitor over HDMI |
 | Omarchy | 4.0.3, Tokyo Night theme |
 | Projects drive | a separate NTFS partition on a 5400rpm hard disk, mounted at `/run/media/oll/Linux` |
@@ -356,6 +356,73 @@ folder started the service, which also found and fixed a mismatch between the dr
 and its backup copy (`$MFTMirr` record 3). The drive mounted about three seconds later with no
 error. `escape` was already mounted by udisks, so its fstab line takes over from the next boot. The
 next restart is the real test.
+
+### 21 October: the laptop keeps freezing
+
+Tonight the laptop froze solid for the fourth time this month: screen stuck, keyboard dead, only
+the power button worked. The RAM bar had been sitting around 58%, so it wasn't out of memory. I
+went through the journal for every boot since September.
+
+**Four crashes, one pattern.** `journalctl --list-boots` shows each boot's first and last log line,
+and `last -x reboot shutdown` marks a boot that never recorded a shutdown as `crash`. October has
+four: the sessions that ended on 9, 13, 18 and 21 October. Three of them logged the same chain in
+the kernel's last seconds:
+
+```
+zram: Decompression failed! err=-22, page=2947785
+Read-error on swap-device (252:0:23582280)
+BUG: Bad rss-counter state mm:... type:MM_SWAPENTS val:-83
+Oops: ... zs_free+0x58/0x110 ... zram_slot_free_notify
+Fixing recursive fault but reboot is needed!
+```
+
+Tonight's logged nothing at all: the journal just stops at 20:54. When the kernel locks up hard
+enough, the journal daemon never gets to write the last lines down. The other three limped on for
+a few seconds first, which is why they left evidence. The 9 October crash also announced itself
+in user space: Claude Code crashed seven times, and Brave, foot and PipeWire once each, in the
+forty minutes before the kernel logged its first zram error. The September boots, on the same
+kernel and swapping just as hard, had none of this.
+
+**What zram is.** Omarchy sets up compressed swap in RAM
+(`/usr/lib/systemd/zram-generator.conf.d/90-omarchy.conf`: size equal to RAM, zstd, priority
+100). When memory gets tight the kernel compresses idle pages and parks them in a reserved part of
+RAM instead of writing them to disk. There's also an ordinary swapfile on the encrypted disk at
+priority 0, used only when zram is full. `err=-22` means zstd looked at a compressed page and said
+it's garbage. Because that page lives in RAM, a single flipped bit is enough. The swap read fails,
+the kernel's count of swapped pages goes wrong, and a little later it trips over its own
+bookkeeping and dies.
+
+**Why the RAM bar didn't warn me.** 58% used means about 4.8 GiB was still available, and the
+pressure files showed nothing stalling. The machine wasn't short of memory when it froze. The
+page that broke had been compressed hours earlier, during a heavy session, and was read back at a
+quiet moment. A corrupt compressed page bites when the kernel next touches it, not when the
+pressure that wrote it was high.
+
+**Two suspects.** Either the RAM or the kernel.
+
+- `sudo dmidecode -t memory` (a real terminal, it needs a password prompt) shows two modules, both
+  DDR4 at 2667 MT/s, 1.2 V, single rank. Slot A is 4 GiB SK Hynix, part `HMA851S6CJR6N-XN`,
+  soldered to the board. Slot B is the 8 GiB stick I added: manufacturer code `89AB`, part number
+  blank. An unknown vendor and an empty part number is what a cheap no-name module looks like.
+  With 4 + 8 GiB the first 8 GiB is interleaved across both and the top 4 GiB lives only on the
+  8 GiB stick, so memtest errors above the 8 GiB mark would blame that stick alone.
+- The kernel is linux 7.2.3, installed on 11 September and never updated. Arch had 7.2.11 by
+  17 October. Against this suspect: September ran the same kernel with swap peaks of 5.7 and
+  9.8 GB and never logged a zram error.
+
+Memtest86+ decides between them. It's installed (`/boot/memtest86+/memtest.efi`, with its own
+entry in the firmware boot menu) since 9 October, right after that day's crash, but I haven't run
+it yet.
+
+**The stopgap.** I turned zram off, so the failing code path isn't used and the disk swapfile
+carries all swap. Slower when memory runs out, but a bad page on disk swap doesn't take the kernel
+down the same way. This is a change to the running system, not a file, so there's nothing to copy
+from this repo: the commands are in [If the laptop freezes](#if-the-laptop-freezes).
+
+**Still to do.** Run Memtest86+ overnight on the charger. If it fails, replace the 8 GiB stick with
+a branded DDR4-2666 SODIMM, after checking Lenovo's spec sheet for the largest size this model
+takes. If it passes, update the kernel and turn zram back on. And if the laptop freezes again with
+zram off, that points at the RAM whatever memtest says.
 
 ## What's in this repo
 
