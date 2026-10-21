@@ -682,6 +682,70 @@ journalctl -b -1 -n 50 --no-pager
 A clean shutdown ends with systemd stopping services and unmounting. If the log stops in the
 middle of kernel errors, the laptop crashed, and that crash is the real problem.
 
+## If the laptop freezes
+
+These are the steps that read the October freezes. Run them after the restart.
+
+**1. Did it crash, or shut down?**
+
+```bash
+journalctl --list-boots
+last -x reboot shutdown | head
+```
+
+A boot with `crash` in the `last` output, or whose last journal line is ordinary desktop chatter
+instead of systemd stopping services, went down hard.
+
+**2. What did the kernel say last?**
+
+```bash
+journalctl -k -b -1 | grep -E 'Oops|BUG:|general protection|recursive fault'
+journalctl -k -b -1 | grep -E 'Decompression failed|Read-error on swap|Bad rss'
+```
+
+`-b -1` is the previous boot, `-b -2` the one before. `Decompression failed` followed by
+`Read-error on swap-device` is the zram chain from October. No output at all means the kernel
+locked up before it could write anything; look at the earlier boots for the pattern.
+
+**3. Did programs crash first?**
+
+```bash
+coredumpctl list --since '-1 day'
+```
+
+A run of crashes across unrelated programs in the hour before a freeze is memory corruption
+showing up in user space before the kernel notices.
+
+**4. Check the RAM modules.** Needs a real terminal for the password prompt.
+
+```bash
+sudo dmidecode -t memory | grep -E 'Size|Type:|Speed|Manufacturer|Part Number|Locator'
+```
+
+Mismatched speeds or types are one problem. A blank part number or a numeric manufacturer code is
+another: the module has an incomplete identity, which is common on cheap sticks.
+
+**5. Take zram out of the picture.** Turns compressed swap off now and keeps it off after a
+restart. The disk swapfile stays, so there's still swap, just slower.
+
+```bash
+sudo swapoff /dev/zram0 && sudo systemctl mask dev-zram0.swap
+swapon --show
+```
+
+Only `/swap/swapfile` should be listed. To bring zram back once the cause is fixed:
+
+```bash
+sudo systemctl unmask dev-zram0.swap && sudo systemctl daemon-reload && sudo systemctl start dev-zram0.swap
+```
+
+`swapoff` is instant when swap is empty. If swap is in heavy use it has to copy everything back
+into RAM first and can take a minute.
+
+**6. Test the RAM.** Restart, open the firmware boot menu and pick Memtest86+. Leave it on the
+charger overnight. If it shows errors, note the address column: on this laptop anything above
+8 GiB can only be the 8 GiB stick.
+
 ## Lessons so far
 
 - **Change your own file, not Omarchy's.** Everything under `/usr/share/omarchy` belongs to the
