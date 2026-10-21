@@ -778,3 +778,7 @@ charger overnight. If it shows errors, note the address column: on this laptop a
   wasn't unmounted, so the useful question is how the previous session ended. Clearing the mark on
   every mount makes the error go away. Finding out why the laptop went down is what stops it
   happening.
+- **A kernel crash is not something a program can catch.** The RAM bar, the pressure files and
+  the OOM killer all watch for running out of memory. Corrupt memory, or a kernel bug, kills the
+  machine with gigabytes still free. The journal of the previous boot is the only witness, and
+  only if the kernel survived long enough to write.
