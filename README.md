@@ -883,3 +883,7 @@ charger overnight. If it shows errors, note the address column: on this laptop a
   the OOM killer all watch for running out of memory. Corrupt memory, or a kernel bug, kills the
   machine with gigabytes still free. The journal of the previous boot is the only witness, and
   only if the kernel survived long enough to write.
+- **Turning off the part that reports an error doesn't remove the cause.** zram was the first
+  thing to notice bad memory, because zstd refuses a page that has changed. With zram off the
+  laptop froze again the next day, this time with crashes in unrelated kernel code. A stopgap buys
+  time to run the real test. It isn't the test.
