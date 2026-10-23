@@ -721,6 +721,65 @@ journalctl -b -1 -n 50 --no-pager
 A clean shutdown ends with systemd stopping services and unmounting. If the log stops in the
 middle of kernel errors, the laptop crashed, and that crash is the real problem.
 
+## About zram
+
+zram is off on this laptop. This is what it is, why I turned it off, and when it can come back.
+
+**What it is.** zram is swap that lives in RAM. Ordinary swap moves memory nobody is using to the
+disk when RAM fills up. zram compresses those pages instead and keeps them in RAM. Compressing is
+much faster than writing to disk, and zstd squeezes a typical page to about a third of its size,
+so a machine with little RAM holds more before it has to touch the disk.
+
+**How Omarchy sets it up.** Omarchy ships
+`/usr/lib/systemd/zram-generator.conf.d/90-omarchy.conf`:
+
+```ini
+[zram0]
+zram-size = ram
+compression-algorithm = zstd
+swap-priority = 100
+```
+
+At boot, systemd's `zram-generator` reads that and creates one device, `/dev/zram0`, that can take
+as much as all of RAM (11.4 GiB here) before compression, plus a unit, `dev-zram0.swap`, that
+turns it on. There's also a swapfile, `/swap/swapfile` on the encrypted NVMe, at priority 0. The
+kernel fills the higher priority first, so zram takes all swap until it's full and the swapfile
+only catches the overflow. Omarchy's comment in the file explains the size: at about 3:1 a full
+device uses roughly a third of RAM, and a smaller one would spill to the swapfile, which has to go
+through disk encryption.
+
+**Why I turned it off.** Three of the October freezes ended the same way: zram couldn't decompress
+a page (`zram: Decompression failed! err=-22`), the swap read failed, and the kernel crashed inside
+zram's cleanup code. Turning zram off took that code out of the picture. It did not stop the
+freezes. On 22 October, with zram off, the kernel crashed ten times in unrelated places. So zram
+was the first thing to notice bad memory, not the thing that broke it. See
+[21 October](#21-october-the-laptop-keeps-freezing) and
+[22 October](#22-october-it-crashed-again-with-zram-off).
+
+**What it costs to have it off.** All swap goes to the swapfile on the NVMe, through encryption.
+Nothing changes until RAM fills up. When it does, swapping is slower than with zram. I haven't
+measured how much.
+
+**Check it.**
+
+```bash
+swapon --show                          # only /swap/swapfile means zram is off
+zramctl                                # no output means no zram device in use
+systemctl status dev-zram0.swap        # "masked" means it stays off after a restart
+```
+
+**Turn it off, and back on.**
+
+```bash
+sudo swapoff /dev/zram0 && sudo systemctl mask dev-zram0.swap
+sudo systemctl unmask dev-zram0.swap && sudo systemctl daemon-reload && sudo systemctl start dev-zram0.swap
+```
+
+**When it can come back.** Once Memtest86+ passes a full night, or the 8 GiB stick has been
+replaced. On plain Arch it isn't
+there unless I install `zram-generator` and write a config, and the four lines above are all it
+needs (in `/etc/systemd/zram-generator.conf`).
+
 ## If the laptop freezes
 
 These are the steps that read the October freezes. Run them after the restart.
