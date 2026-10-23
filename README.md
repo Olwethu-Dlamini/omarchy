@@ -424,6 +424,45 @@ a branded DDR4-2666 SODIMM, after checking Lenovo's spec sheet for the largest s
 takes. If it passes, update the kernel and turn zram back on. And if the laptop freezes again with
 zram off, that points at the RAM whatever memtest says.
 
+### 22 October: it crashed again, with zram off
+
+zram had been off since 21:31 on 21 October. At 23:26 the next evening the kernel crashed anyway:
+ten oopses in the next hour and twenty minutes, and the journal ends at 01:01 on 23 October with no
+shutdown. Another hard freeze.
+
+**No zram this time.** There's no `Decompression failed` line anywhere in that boot. The kernel
+followed pointers that led nowhere (`BUG: unable to handle page fault`, and once a `general
+protection fault ... non-canonical address`), in parts of the kernel that have nothing to do with
+each other:
+
+| Where it crashed | What that code does |
+|---|---|
+| Where it crashed | Who was running | What that code does |
+|---|---|---|
+| `vfs_getattr_nosec`, 5 times | Bun worker threads | answers `stat()`, a request for a file's details |
+| `link_path_walk`, 2 times | Bun worker threads | follows a path one folder at a time |
+| `find_inode` | `updatedb`, the nightly file index | finds a file's inode |
+| `btrfs_extent_map_shrinker_worker` | a kernel worker | trims btrfs's cache of where files sit on disk |
+| `move_to_new_folio` | `kcompactd0` | moves memory pages around to make room |
+
+```bash
+journalctl -k -b -1 | grep -A12 Oops | grep -E 'Comm:|RIP: 0010'
+```
+
+User space felt it too: Brave died with `SIGILL` at 23:27, a minute after the first oops. That
+signal means the CPU was handed something that isn't an instruction.
+
+**What it means.** On 21 October I wrote that a freeze with zram off would point at the RAM
+whatever memtest says. This is that freeze. A kernel bug usually crashes in the same place every
+time. Crashes spread across file lookups, btrfs and memory compaction, in programs and in the
+kernel's own threads, look much more like memory that doesn't hold what was written to it. zram was simply where it showed up first:
+zstd checks a page's structure when it decompresses it, and refuses one that has changed, so zram
+noticed the damage and said so. With zram gone the damage lands in kernel data instead, and the
+first sign is a bad pointer.
+
+**Still not proven.** The kernel is still 7.2.3 from install day, and Memtest86+ still hasn't run.
+The no-name 8 GiB stick is now the main suspect, not a certainty.
+
 ## What's in this repo
 
 | File | Goes to | What I changed |
