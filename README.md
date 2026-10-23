@@ -918,3 +918,25 @@ Learning Omarchy also meant learning its own layer on top of Arch: a Lua Hyprlan
 
 **Why I'm leaving.** I want my own Arch, where I put everything there myself. Then whatever is
 running is something I chose and know how to change.
+
+### Before wiping the disk
+
+The freezes belong to the laptop, not to Omarchy. If the 8 GiB stick is bad, a fresh Arch will
+freeze too, and a clean install is the worst time to find out.
+
+1. **Run Memtest86+ while it's still installed.** It's at `/boot/memtest86+/memtest.efi`, with its
+   own entry in the firmware boot menu, and wiping the NVMe removes it. Leave it on the charger
+   overnight. On plain Arch, `memtest86+-efi` puts it back.
+2. **If it shows errors**, note the addresses. Anything above 8 GiB can only be the 8 GiB stick.
+   Running on the soldered 4 GiB alone for a few days is a free second test: no freezes means the
+   stick. Replace it with a branded DDR4-2666 SODIMM after checking Lenovo's spec sheet for the
+   largest size the IdeaPad L3 15IML05 takes.
+3. **If it passes**, the new install's current kernel takes the other suspect out. If plain Arch
+   on a new kernel still freezes, run Memtest again, longer.
+4. **Leave zram off** on the new install until one of those has cleared the RAM. See
+   [About zram](#about-zram).
+5. **Nothing here needs saving first.** This repo is on the `Linux` NTFS partition, on the hard
+   disk, not on the NVMe, and it's pushed to GitHub. The `Linux` and `escape` drives survive the
+   wipe. Things that only live on the NVMe and might matter: `~/.ssh`, the GNOME keyring (Brave's
+   saved passwords), `~/.local/share/opencode/auth.json` and other app logins, Thunderbird's
+   profile, and Telegram's session.
