@@ -840,6 +840,9 @@ sudo systemctl unmask dev-zram0.swap && sudo systemctl daemon-reload && sudo sys
 `swapoff` is instant when swap is empty. If swap is in heavy use it has to copy everything back
 into RAM first and can take a minute.
 
+This changes how a freeze looks more than whether it happens. In October it removed the zram
+errors from the log, and the laptop froze again the next day anyway.
+
 **6. Test the RAM.** Restart, open the firmware boot menu and pick Memtest86+. Leave it on the
 charger overnight. If it shows errors, note the address column: on this laptop anything above
 8 GiB can only be the 8 GiB stick.
