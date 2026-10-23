@@ -887,3 +887,34 @@ charger overnight. If it shows errors, note the address column: on this laptop a
   thing to notice bad memory, because zstd refuses a page that has changed. With zram off the
   laptop froze again the next day, this time with crashes in unrelated kernel code. A stopgap buys
   time to run the real test. It isn't the test.
+
+## Leaving Omarchy
+
+On 23 October 2026, six weeks after installing it, I'm leaving Omarchy for my own Arch install,
+where I set up everything myself.
+
+**What Omarchy gave me.** A finished desktop on the first day. The installer set up btrfs, disk
+encryption, the Limine bootloader and Snapper snapshots. After that I had Hyprland, a themed bar, a
+launcher, a screensaver, a share picker, a power-profile switcher, mise, btop and four
+preconfigured terminals. In six weeks almost everything I changed was a line or two in the right
+file: the display scale, a font size, a keybinding, a bar module. Its browser installer even set
+the Wayland variable for Zen. The split between Omarchy's defaults in `/usr/share/omarchy` and my
+overrides in `~/.config` kept my changes small and easy to undo.
+
+**Where the time went.** Most of the problems I chased weren't caused by Omarchy, but in each one,
+part of the work was finding out what had already been set up for me:
+
+| Problem | What I had to find |
+|---|---|
+| Slow on the charger for three weeks | Omarchy remembers one power profile for AC and one for battery, and power-saver had stuck on AC since install day |
+| Teams couldn't share my screen | the Hyprland screen-share portal had hung. That's an upstream bug, but fixing it meant learning which portal Omarchy uses and how it's configured |
+| Brave lost the microphone | PipeWire had crashed and restarted silently. Upstream again |
+| The projects drive wouldn't mount | the freezes left it dirty. The fix is mine and works on any Arch |
+| Four freezes in October | Omarchy turns on zram, sized to all of RAM, and I only found out it existed when it showed up in the crash logs. zram turned out to be the messenger: the freezes continued without it, and the 8 GiB stick is the main suspect |
+
+Learning Omarchy also meant learning its own layer on top of Arch: a Lua Hyprland config with an
+`o.bind` helper, the bar in `shell.json`, themes under `~/.local/state/omarchy`, and a set of
+`omarchy-*` commands. None of that carries over to plain Arch.
+
+**Why I'm leaving.** I want my own Arch, where I put everything there myself. Then whatever is
+running is something I chose and know how to change.
