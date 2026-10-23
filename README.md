@@ -5,6 +5,9 @@ Omarchy is DHH's opinionated Arch Linux + Hyprland setup. Out of the box it give
 keyboard-driven desktop with a theme, a bar, a launcher and a lot of preinstalled apps, so most of
 what I've done since is small tweaks on top.
 
+On 23 October 2026 I left Omarchy for my own Arch install. [Leaving Omarchy](#leaving-omarchy)
+says why, what to do before wiping the disk, and which of these files still work without it.
+
 This repo holds those tweaks and a journal of why I made each one. Everything under `config/`
 mirrors `~/.config/` and everything under `etc/` mirrors `/etc`, and they only contain files I
 actually changed. Omarchy's own defaults live in
