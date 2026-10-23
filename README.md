@@ -940,3 +940,37 @@ freeze too, and a clean install is the worst time to find out.
    wipe. Things that only live on the NVMe and might matter: `~/.ssh`, the GNOME keyring (Brave's
    saved passwords), `~/.local/share/opencode/auth.json` and other app logins, Thunderbird's
    profile, and Telegram's session.
+
+### What carries over to plain Arch
+
+**Works as it is:**
+
+| File | Needs |
+|---|---|
+| `config/pipewire/pipewire.conf.d/99-input-denoising.conf` | `noise-suppression-for-voice` |
+| `etc/systemd/coredump.conf.d/size-limits.conf` | nothing |
+| `etc/systemd/system/ntfs-clear-dirty@.service` and `etc/fstab.ntfs` | `ntfsprogs`. Same drives, so the UUIDs still match. Install it early: the first crash will leave a drive dirty |
+| `config/git/config` | nothing |
+| `config/mise/config.toml` | `mise` itself, which Omarchy had installed for me |
+| `config/opencode/opencode.json` | OpenCode, through mise |
+| `config/mimeapps.list` | Brave installed |
+| `config/environment.d/omarchy-firefox-wayland.conf` | a Wayland desktop |
+| `config/systemd/user/portal-watchdog.*` | only if I use Hyprland, since it checks `xdg-desktop-portal-hyprland` |
+
+**Works after a small change:**
+
+| File | Change |
+|---|---|
+| `config/foot/foot.ini`, `config/alacritty/alacritty.toml`, `config/kitty/kitty.conf` | delete the `include` / `import` line that points at `~/.local/state/omarchy/current/theme/`. Ghostty's line starts with `?`, so it's skipped when the file is missing. All four need `ttf-jetbrains-mono-nerd` |
+| `config/brave-flags.conf` | delete the `--load-extension` line: those extensions live in `/usr/share/omarchy` |
+| `packages.txt` | plain Arch has no `yay`, so install an AUR helper first. `zen-browser-bin` and `brave-bin` come from the AUR. `claude-code` and `nautilus-open-any-terminal` came from Omarchy's own package repo, so on plain Arch they come from the AUR too |
+
+**Omarchy only.** `config/omarchy/` (the bar, the RAM module and the screensaver) and
+`config/hypr/*.lua` (the `o.bind` helper and Omarchy's Lua layout). What's worth keeping from them
+is the numbers: display scale **1.6**, `GDK_SCALE=2`, 7pt terminal fonts, lock after 30 minutes,
+and Mission Center on **Super+Shift+Ctrl+T**. The RAM script's `awk` works in any bar that runs a
+command, such as Waybar.
+
+**Lessons that aren't about Omarchy.** Most of [Lessons so far](#lessons-so-far) applies to any Arch
+install, and so do the troubleshooting sections: screen sharing, the
+microphone, a drive that won't mount, and a freeze.
