@@ -466,6 +466,38 @@ first sign is a bad pointer.
 **Still not proven.** The kernel is still 7.2.3 from install day, and Memtest86+ still hasn't run.
 The no-name 8 GiB stick is now the main suspect, not a certainty.
 
+### 24 October: making plain Arch feel like Omarchy
+
+The day after leaving, the new install is up with Sway instead of Hyprland. The aim was to keep
+what I'd got used to: the same keys, a bar and launcher that look similar, and dark everywhere. The
+files are in [`arch-sway/`](arch-sway/), which mirrors `~/.config/` the same way `config/` does.
+
+**Keybindings.** The Omarchy muscle memory came first. Super+Return opens the terminal, Super+Space
+the launcher, Super+W closes a window, Super+Shift+B/F/T open the browser, file manager and `top`,
+and Super+Escape opens a system menu for lock, suspend, reboot and power off. Super+K shows a list
+of every binding in Wofi, like Omarchy's. Workspaces are Super+1 to 0, and Super+Tab cycles them.
+([`arch-sway/sway/`](arch-sway/sway/config), [`keys.txt`](arch-sway/sway/keys.txt),
+[`system-menu.sh`](arch-sway/sway/system-menu.sh))
+
+**Bar and launcher.** Waybar replaces Omarchy's bar and Wofi replaces Walker. The bar shows
+workspaces, the clock, volume, network, Bluetooth, CPU, memory and battery. Clicking volume,
+network or Bluetooth opens pavucontrol, the connection editor or Blueman under the bar, and clicking
+again closes it, which is what `toggle.sh` does. Memory is a plain percentage for now, not the RAM
+module from [23 September](#23-september-ram-in-the-bar).
+([`arch-sway/waybar/`](arch-sway/waybar/config.jsonc), [`arch-sway/wofi/`](arch-sway/wofi/config))
+
+**Colours.** I haven't settled on one theme. Sway, Waybar and Swaylock use Gruvbox. Foot, Wofi and
+Mako use the Catppuccin palette. Omarchy kept everything on one theme, so making these agree is
+still to do.
+([`arch-sway/foot/`](arch-sway/foot/foot.ini), [`arch-sway/mako/`](arch-sway/mako/config),
+[`arch-sway/swaylock/`](arch-sway/swaylock/config))
+
+**Things that differ from Omarchy.** There is no display scale here, so the terminal is 11pt, not
+the 7pt I used at 1.6 scale. The screen locks after 5 minutes of idling, not 30, and powers off at
+10. Brave runs on Wayland with its passwords in the GNOME keyring, and I left out the
+`--load-extension` flag, as [Leaving Omarchy](#leaving-omarchy) said to. Everything I installed by
+hand is in [`arch-sway/packages.txt`](arch-sway/packages.txt).
+
 ## What's in this repo
 
 | File | Goes to | What I changed |
