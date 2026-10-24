@@ -525,6 +525,11 @@ hand is in [`arch-sway/packages.txt`](arch-sway/packages.txt).
 | [`etc/fstab.ntfs`](etc/fstab.ntfs) | added to the end of `/etc/fstab` | mounts the `Linux` and `escape` drives through that service |
 | [`packages.txt`](packages.txt) | — | everything I installed on top of Omarchy |
 
+Everything under [`arch-sway/`](arch-sway/) is the Sway setup on plain Arch from
+[24 October](#24-october-making-plain-arch-feel-like-omarchy). It mirrors `~/.config/` the same way
+`config/` does, and holds every file in full, not just my changes, because there are no Omarchy
+defaults underneath it.
+
 ## Using these files
 
 Copy a file into place, then reload whatever reads it:
