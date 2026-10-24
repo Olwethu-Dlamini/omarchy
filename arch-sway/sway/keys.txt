@@ -1,0 +1,32 @@
+SUPER+Return          Terminal
+SUPER+Space           App launcher
+SUPER+Alt+Space       System menu
+SUPER+Escape          System menu (lock/suspend/reboot/power off)
+SUPER+K               Show this key list
+SUPER+W               Close window
+SUPER+Shift+B         Browser
+SUPER+Shift+F         File manager
+SUPER+Shift+T         Terminal task viewer (top)
+SUPER+Ctrl+V          Clipboard history
+SUPER+F               Fullscreen
+SUPER+V               Toggle floating
+SUPER+J               Toggle split direction
+SUPER+G               Toggle tabbed layout
+SUPER+Arrows          Move focus
+SUPER+Shift+Arrows    Swap window
+SUPER+1..0            Go to workspace
+SUPER+Shift+1..0      Move window to workspace
+SUPER+Tab             Next workspace
+SUPER+Shift+Tab       Previous workspace
+SUPER+Ctrl+Tab        Last workspace
+SUPER+Scroll          Cycle workspaces
+SUPER+- / SUPER+=     Shrink / grow width
+SUPER+Shift+- / =     Shrink / grow height
+SUPER+Comma           Dismiss notification
+SUPER+Ctrl+L          Lock screen
+SUPER+Shift+C         Reload sway config
+Print                 Screenshot region to clipboard
+Shift+Print           Screenshot full screen to file
+SUPER+Print           Screenshot region to file
+SUPER+LeftMouse       Drag window
+SUPER+RightMouse      Resize window
