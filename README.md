@@ -471,6 +471,8 @@ The no-name 8 GiB stick is now the main suspect, not a certainty.
 The day after leaving, the new install is up with Sway instead of Hyprland. The aim was to keep
 what I'd got used to: the same keys, a bar and launcher that look similar, and dark everywhere. The
 files are in [`arch-sway/`](arch-sway/), which mirrors `~/.config/` the same way `config/` does.
+That folder is a snapshot from this day; the laptop's live config, kept up to date, is in
+[olwethuArch](https://github.com/Olwethu-Dlamini/olwethuArch).
 
 **Keybindings.** The Omarchy muscle memory came first. Super+Return opens the terminal, Super+Space
 the launcher, Super+W closes a window, Super+Shift+B/F/T open the browser, file manager and `top`,
