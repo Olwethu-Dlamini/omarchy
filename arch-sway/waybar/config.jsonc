@@ -44,10 +44,9 @@
         "on-click-right": "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
     },
     "network": {
-        "format-wifi": "󰤨",
+        "format-wifi": "󰤨 {essid}",
         "format-ethernet": "󰈀 {ipaddr}",
         "format-disconnected": "󰤭 offline",
-        "tooltip-format-wifi": "{essid}  {signalStrength}%",
         "tooltip-format": "{ifname}  {signalStrength}%",
         "on-click": "/home/olwethu/.config/waybar/toggle.sh nm-connection-editor nm-connection-editor",
         "tooltip": true
